@@ -30,8 +30,18 @@ class CustomUserManager(BaseUserManager):
         return user
     
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    class Gender(models.TextChoices):
+        MALE = 'M', 'Male'
+        FAMALE = 'F', 'Famale'
+        OTHER = 'Other', 'Other'
+        
     username = models.CharField(max_length=250, blank=False, null=False, unique=True)
     email = models.EmailField()
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    direccion = models.CharField(max_length=300, blank=True)
+    gender = models.CharField(max_length=8, choices=Gender.choices, default=Gender.OTHER, blank=True)
+    phone = models.CharField(max_length=9, blank=True, unique=True)
     is_superuser = models.BooleanField(default=False, blank=False, null=False)
     perfil_image = models.CharField(max_length=300, blank=False, default='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png')
     
