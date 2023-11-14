@@ -1,7 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from .serialisers import CreateUserSerializer, UserSerilizer
 from rest_framework import status
@@ -10,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serialisers import TokenPairSerializer
 # Create your views here.
 MODEL_USER = get_user_model()
-class CreateUserView(APIView):
+class CreateUserViewSet(APIView):
     def post(self, request):
         serialiser = CreateUserSerializer(data = request.data)
         if serialiser.is_valid():
@@ -38,11 +37,12 @@ class Login(TokenObtainPairView):
             return Response({'error': 'user or password is not valid'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'error': 'user or password is not valid'}, status=status.HTTP_400_BAD_REQUEST)
     
-class Logout(GenericAPIView):
+class Logout(APIView):
     def post(self, request):
         user_obtain = request.data.get('user')
         user = MODEL_USER.objects.filter(id=user_obtain)
         if user.exists():
             RefreshToken.for_user(user.first())
+            
             return Response({'response': 'user logout'}, status=status.HTTP_200_OK)
         return Response({'error': 'user not exists'}, status=status.HTTP_400_BAD_REQUEST)
