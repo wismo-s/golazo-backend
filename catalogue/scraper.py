@@ -8,12 +8,12 @@ def catalogScraper(url, html_class, includ):
     html_result = obtain_request.text 
     soup = BeautifulSoup(html_result, "html.parser")
     images_divs = soup.find_all('img', class_=f'{html_class}')
+    price = soup.find_all('div', class_='grid-product__price')
     api_content = []
-    count = 0
-    for img in images_divs:
-         if f'{includ}' in img['alt']:
-            src = img['src'].split("//")[1]
-            obj = { 'id': count, 'title': img['alt'], 'img': src}
-            count+=1
+    for i in range(0, len(images_divs)):
+        image = images_divs[i]
+        if f'{includ}' in image['alt']:
+            src = image['src'].split("//")[1]
+            obj = { 'id': i, 'title': image['alt'], 'img': src, 'price': price[i].get_text(strip=True)}
             api_content.append(obj)
     return api_content
