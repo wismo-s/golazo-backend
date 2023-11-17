@@ -17,7 +17,17 @@ class UserSerilizer(serializers.ModelSerializer):
     class Meta:
         model = USER_MODEL
         fields = ['id', 'username', 'email', 'perfil_image', 'first_name', 'last_name', 'direccion', 'gender', 'phone']
-
-
+        
+class EditSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    email = serializers.EmailField(max_length=254)
+    perfil_image = serializers.CharField(max_length=300, required=False)
+    password = serializers.CharField(max_length=128)
+    first_name = serializers.CharField(allow_blank=True, max_length=150, required=False)
+    last_name = serializers.CharField(allow_blank=True, max_length=150, required=False)
+    direccion = serializers.CharField(allow_blank=True, max_length=300, required=False)
+    gender = serializers.CharField(allow_blank=True, required=False)
+    phone = serializers.CharField(allow_blank=True, max_length=9, required=False)
+    
 class TokenPairSerializer(TokenObtainPairSerializer):
     pass

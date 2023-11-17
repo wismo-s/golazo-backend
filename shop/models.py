@@ -5,4 +5,5 @@ USER_MODEL = get_user_model()
 # Create your models here.
 class Facture(models.Model):
     user_id = models.ForeignKey(USER_MODEL, on_delete=models.CASCADE)
+    products = models.JSONField()
     total = models.FloatField(null=False, blank=False)

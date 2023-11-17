@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
 import requests as resq
-from .models import Product
-#class_="lazyloaded"
 
 def catalogScraper(url, html_class, includ):
     URL_BASE = f'https://www.alphafit.pe/collections/{url}'
@@ -16,7 +14,11 @@ def catalogScraper(url, html_class, includ):
         price = price_str[i].get_text(strip=True).split(" ")[-1]
         if f'{includ}' in image['alt']:
             src = image['src'].split("//")[1]
-            obj = { 'id': i, 'title': image['alt'], 'img': src, 'price': price}
-            Product.objects.create(name=image['alt'], img=src, price=price)
+            obj = {'id': i, 'name': image['alt'], 'img': src, 'price': price}
             api_content.append(obj)
+            """
+            serialiser = ProductSerilizer(data=obj)
+            if serialiser.is_valid():
+                serialiser.save()
+            """
     return api_content
